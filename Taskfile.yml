@@ -1,0 +1,69 @@
+version: "3"
+
+tasks:
+  install:
+    run: once
+    cmds:
+      - uv sync
+
+  install:frozen:
+    cmds:
+      - uv sync --frozen
+
+  fmt:
+    deps: [install:frozen]
+    cmds:
+      - uv run ruff format
+
+  fmt:check:
+    deps: [install:frozen]
+    cmds:
+      - uv run ruff format --check
+
+  lint:
+    deps: [install:frozen]
+    cmds:
+      - uv run ruff check
+
+  lint:fix:
+    deps: [install:frozen]
+    cmds:
+      - uv run ruff check --fix
+
+  test:
+    deps: [install:frozen]
+    cmds:
+      - uv run pytest
+
+  typecheck:
+    deps: [install:frozen]
+    cmds:
+      - uv run ty check
+
+  ci:
+    deps: [fmt:check, lint, typecheck, test]
+    cmds:
+      - echo "Successfully ran CI workflow"
+
+  # --------------------------------------------
+  # ADD docker-compose.yml IF DOCKER IS REQUIRED
+  # --------------------------------------------
+  # docker:down:
+  #   cmds:
+  #     - docker compose down --remove-orphans
+
+  # docker:down:v:
+  #   cmds:
+  #     - docker compose down -v --remove-orphans
+
+  # docker:build:
+  #   cmds:
+  #     - docker compose build
+
+  # docker:up:
+  #   cmds:
+  #     - docker compose up
+
+  # docker:up:build:
+  #   cmds:
+  #     - docker compose up --build

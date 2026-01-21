@@ -1,0 +1,141 @@
+[project]
+name = "python-template"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "camhpj", email = "camhpjohnson@gmail.com" }
+]
+requires-python = "==3.12.3"  # Databricks Runtime 17.3 LTS & Serverless Environment Version 4
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.12.0",
+    "faker>=40.1.2",
+    "ipython>=9.9.0",
+    "jupyterlab>=4.5.2",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.13",
+    "ty>=0.0.13",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+tag_format = "v$version"
+version_scheme = "semver2"
+version_provider = "uv"
+update_changelog_on_bump = true
+major_version_zero = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+indent-width = 4
+fix = true
+unsafe-fixes = false
+show-fixes = true
+exclude = [
+  ".git",
+  ".venv",
+  "__pycache__",
+  "dist",
+  "build",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".pytest_cache",
+  "tests",
+  "**/*.ipynb"
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = [
+  "E",     # pycodestyle errors
+  "F",     # pyflakes
+  "W",     # pycodestyle warnings
+  "I",     # isort
+  "UP",    # pyupgrade
+  "B",     # flake8-bugbear
+  "SIM",   # flake8-simplify
+  "C4",    # flake8-comprehensions
+  "PIE",   # flake8-pie
+  "RUF",   # Ruff-specific rules
+]
+ignore = [
+  "E501",  # Line length handled by formatter
+  "B008",  # Function calls in default args (common w/ FastAPI)
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["python_template"]
+combine-as-imports = true
+force-sort-within-sections = true
+
+[tool.ty.src]
+include = ["src"]
+exclude = ["tests"]
+respect-ignore-files = true
+
+[tool.ty.rules]
+possibly-missing-import = "ignore"
+unresolved-import = "ignore"
+unused-ignore-comment = "error"
+redundant-cast = "warn"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = """
+    -ra
+    --strict-config
+    --strict-markers
+    --showlocals
+    --cov
+"""
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+filterwarnings = []
+log_cli = true
+log_cli_level = "INFO"
+
+[tool.coverage.run]
+branch = true
+parallel = true
+source = ["python_template"]
+omit = [
+  "tests/*",
+  "**/__init__.py",
+  "**/__main__.py",
+  "**/conftest.py",
+  "**/migrations/*",
+  "**/alembic/*",
+  "**/generated/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+precision = 1
+# fail_under = 85
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+  "@(abc\\.)?abstractmethod",
+]
+
+[build-system]
+requires = ["uv_build>=0.8.24,<0.9.0"]
+build-backend = "uv_build"
