@@ -45,6 +45,23 @@ tasks:
     cmds:
       - echo "Successfully ran CI workflow"
 
+  bundle:validate:
+    requires:
+      vars:
+        - DATABRICKS_CONFIG_PROFILE
+        - name: TARGET
+          enum: [dev, prod]
+    cmds:
+      - databricks bundle validate -t $TARGET
+
+  bundle:deploy:
+    vars:
+      - DATABRICKS_CONFIG_PROFILE
+      - name: TARGET
+        enum: [dev, prod]
+    cmds:
+      - databricks bundle deploy -t $TARGET
+
   # --------------------------------------------
   # ADD docker-compose.yml IF DOCKER IS REQUIRED
   # --------------------------------------------
