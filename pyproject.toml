@@ -7,7 +7,12 @@ authors = [
     { name = "camhpj", email = "camhpjohnson@gmail.com" }
 ]
 requires-python = "==3.12.3"  # Databricks Runtime 17.3 LTS & Serverless Environment Version 4
-dependencies = []
+dependencies = [
+    "databricks-sdk>=0.79.0",
+    "pydantic>=2.12.5",
+    "pyspark>=4.1.1",
+    "structlog>=25.5.0",
+]
 
 [dependency-groups]
 dev = [
@@ -20,6 +25,9 @@ dev = [
     "ruff>=0.14.13",
     "ty>=0.0.13",
 ]
+
+[project.scripts]
+main = "python_template.main:main"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
